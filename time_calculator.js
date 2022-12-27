@@ -12,8 +12,8 @@ class Task{
     }
     calc_time(counter){
         var time = this.task[counter-1][2].split(":");
-        let hour = this.time.getHours;
-        let minutes = this.time.getMinutes;
+        let hour = this.time.getHours();
+        let minutes = this.time.getMinutes();
         return `${Math.abs(Number(time[0])-hour)}:${Math.abs(Number(time[1])-minutes)} Left`
     }
     time_left(counter){
