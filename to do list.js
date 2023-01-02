@@ -81,8 +81,7 @@ while (flag){
             break;
         case 3:
             user.print_task();
-            user.delete_task(Number(input("Delete Task Number? ")))
-            user.shift_task();
+            user.delete_task(Number(input("Delete Task Number? ")));
             break;
         case 4:
             flag = false;
