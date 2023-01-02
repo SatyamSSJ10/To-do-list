@@ -10,18 +10,18 @@ class Task{
         this.file = "data.txt";
         this.content = '';
         this.fileHandle();
+        //Using JSON to store userdata
     }
-    fileHandle(){
+    fileHandle(){ //W.I.P. This function will update the Class attributes with the values stored in the data.txt file if present.
         if (!fs.existsSync(`${this.file}`)){
             fs.writeFile(this.file,'{}', (error, res)=> {
                 if(error){ 
-                    console.log('Error=',error);
+                    console.log('Error: ',error);
                         }
                     }
                 )}
         else{
             this.content = fs.readFileSync(String(this.file), 'utf-8');
-            console.log(this.content);
             }  
         }
     saveFile(){
