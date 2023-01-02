@@ -1,15 +1,43 @@
 const input = require('prompt-sync')();
+const fs = require('fs');
+
 class Task{
     constructor(name){
         this.username=name;
         this.task=[];
         this.counter = 0;
         this.time = new Date();
+        this.file = "data.txt";
+        this.content = '';
+        this.fileHandle();
+    }
+    fileHandle(){
+        if (!fs.existsSync(`${this.file}`)){
+            fs.writeFile(this.file,'{}', (error, res)=> {
+                if(error){ 
+                    console.log('Error=',error);
+                        }
+                    }
+                )}
+        else{
+            this.content = fs.readFileSync(String(this.file), 'utf-8');
+            console.log(this.content);
+            }  
+        }
+    saveFile(){
+        fs.writeFile(this.file,this.content,(err,res)=>{
+            if(err){
+                console.log("Error at Saving File : ", err);
+            }
+        })
+    }
+    makeJSON(){
+        this.content = {nameUser: this.username,tasks: this.task, taskcounter: this.counter};
     }
     add_task(task,time){
         this.counter++;
         this.task.push([Number(this.counter),String(task),String(time)]);
-        console.log(`Appended: ${String(task)} for time = ${time}`);
+        console.log(`Appended: ${task} for time = ${time}`);
     }
     calc_time(counter){
         var time = this.task[counter-1][2].split(":");
@@ -52,7 +80,6 @@ class Task{
         this.shift_task();
         this.print_task();
     }
-    
     change_priority(pos,newone){ //change priority of task
         let temp = this.task.splice(pos-1,1);
         this.task.splice(newone-1,0,temp);
@@ -81,9 +108,11 @@ while (flag){
             break;
         case 3:
             user.print_task();
-            user.delete_task(Number(input("Delete Task Number? ")));
+            user.delete_task(Number(input("Delete Task Number? ")))
+            user.shift_task();
             break;
         case 4:
+            saveFile();
             flag = false;
             break;
         }
