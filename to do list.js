@@ -10,22 +10,45 @@ class Task{
         this.file = "data.txt";
         this.content = '';
         this.fileHandle();
-        //Using JSON to store userdata
     }
-    fileHandle(){ //W.I.P. This function will update the Class attributes with the values stored in the data.txt file if present.
+    fileHandle(){
         if (!fs.existsSync(`${this.file}`)){
             fs.writeFile(this.file,'{}', (error, res)=> {
                 if(error){ 
-                    console.log('Error: ',error);
+                    console.log('Error=',error);
                         }
                     }
                 )}
         else{
             this.content = fs.readFileSync(String(this.file), 'utf-8');
+            //console.log(this.content);
+            }
+            var userdata = JSON.parse(this.content);
+            if (userdata.nameUser == String(this.username)){
+                console.log("Recover Previous Data\n");
+                    if(input("Y/N")=="Y"){
+                        this.username = userdata.nameUser;
+                        this.task = userdata.tasks;
+                        this.counter = userdata.taskcounter;
+                    }
+                    else{
+                        this.deleteContent();
+                    }
+                }
             }  
+    deleteContent(){
+        fs.truncate(String(this.file),'',(err,dat)=>{
+            if(err){
+                console.log(err);
+            }
         }
+        
+        )
+    }
     saveFile(){
-        fs.writeFile(this.file,this.content,(err,res)=>{
+        this.deleteContent();
+        user.makeJSON();
+        fs.writeFile(this.file,JSON.stringify(this.content),(err,res)=>{
             if(err){
                 console.log("Error at Saving File : ", err);
             }
@@ -84,6 +107,7 @@ class Task{
         let temp = this.task.splice(pos-1,1);
         this.task.splice(newone-1,0,temp);
         console.log("Updated task list: ");
+        this.shift_task();
         this.print_task();
     }
 }
@@ -112,8 +136,11 @@ while (flag){
             user.shift_task();
             break;
         case 4:
-            saveFile();
+            user.saveFile();
             flag = false;
             break;
+        case 5:
+            user.makeJSON();
+            console.log(user.content);
         }
 }
