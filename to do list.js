@@ -24,7 +24,7 @@ class Task{
             //console.log(this.content);
             }
             var userdata = JSON.parse(this.content);
-            if (userdata.nameUser == String(this.username)){
+        if (userdata.nameUser == String(this.username)){
                 console.log("Recover Previous Data\n");
                     if(input("Y/N")=="Y"){
                         this.username = userdata.nameUser;
@@ -35,7 +35,11 @@ class Task{
                         this.deleteContent();
                     }
                 }
+        else {
+            console.log();
             }  
+    }
+        
     deleteContent(){
         fs.truncate(String(this.file),'',(err,dat)=>{
             if(err){
